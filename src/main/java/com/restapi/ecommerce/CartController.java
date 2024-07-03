@@ -20,7 +20,7 @@ public class CartController {
 
     // Create new CartItem
     @PostMapping
-    public ResponseEntity<CartItem> createUser(@RequestBody CartItem cartItem) {
+    public ResponseEntity<CartItem> createItem(@RequestBody CartItem cartItem) {
         cartItem.setId(counter.incrementAndGet());
         cartItems.add(cartItem);
         return new ResponseEntity<>(cartItem, HttpStatus.CREATED);
@@ -28,7 +28,7 @@ public class CartController {
 
     // Delete cartItems
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
         Optional<CartItem> itemOptional = cartItems.stream().filter(u -> u.getId().equals(id)).findFirst();
         if (itemOptional.isPresent()) {
             cartItems.remove(itemOptional.get());
