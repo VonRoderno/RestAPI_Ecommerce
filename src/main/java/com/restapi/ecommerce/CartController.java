@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/cart")
 public class CartController {
 
     private final List<CartItem> cartItems = new ArrayList<>();
@@ -17,13 +17,7 @@ public class CartController {
     public List<CartItem> getAllCartItems() {
         return cartItems;
     }
-    // Get CartItem by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<CartItem> getUserById(@PathVariable Long id) {
-        Optional<CartItem> cartItem = cartItems.stream().filter(u -> u.getId().equals(id)).findFirst();
-        return cartItem.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+
     // Create new CartItem
     @PostMapping
     public ResponseEntity<CartItem> createUser(@RequestBody CartItem cartItem) {
@@ -32,12 +26,12 @@ public class CartController {
         return new ResponseEntity<>(cartItem, HttpStatus.CREATED);
     }
 
-    // Delete user
+    // Delete cartItems
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        Optional<CartItem> userOptional = cartItems.stream().filter(u -> u.getId().equals(id)).findFirst();
-        if (userOptional.isPresent()) {
-            cartItems.remove(userOptional.get());
+        Optional<CartItem> itemOptional = cartItems.stream().filter(u -> u.getId().equals(id)).findFirst();
+        if (itemOptional.isPresent()) {
+            cartItems.remove(itemOptional.get());
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
